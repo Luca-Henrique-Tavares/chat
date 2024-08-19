@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teki Chat</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <img src="/img/pagchat.png" class="pagchat_img">
+
+    <div class="chat_container">
+        <div class="chat_cnt">
+            <p class="chat_title">Teki Responde:</p>
+            <div class="chat_sep">
+                <div class="chat_pesq">
+                    <input type="text" placeholder="O que você quer descobrir hoje?" class="chat_plc" name="pesquisar" id="pesquisar">
+                    <button type="button" id="searchButton"><img src="/img/pesquisar.png" class="pesquisar_img"></button>
+                    <div id="suggestions"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="results"></div>
+
+        <!-- Carrossel Saiba Mais -->
+        <div class="carousel-container hidden">
+            <button class="btn btn-prev">&#10094;</button>
+            <div id="saibaMaisSlider" class="carousel-slide"></div>
+            <button class="btn btn-next">&#10095;</button>
+        </div>
+
+        <!-- Carrossel 360 graus -->
+        <p class="chat_tipo hidden" id="carousel360Title">Sites Utilizados:</p>
+        <div class="carousel-360-container hidden">
+            <div id="carousel360" class="carousel-360-slide"></div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('pesquisar');
+    const searchButton = document.getElementById('searchButton');
+    const resultsContainer = document.getElementById('results');
+    const saibaMaisSlider = document.getElementById('saibaMaisSlider');
+    const carousel360 = document.getElementById('carousel360');
+    const suggestionsBox = document.getElementById('suggestions');
+    const carouselContainer = document.querySelector('.carousel-container');
+    const carousel360Container = document.querySelector('.carousel-360-container');
+    const carousel360Title = document.getElementById('carousel360Title');
+    let currentSlide = 0;
+
+    // Função para criar o carrossel de Saiba Mais
+    function createCarousel(cards) {
+        saibaMaisSlider.innerHTML = ''; // Limpa o conteúdo existente
+
+        cards.forEach(card => {
+            const cardTitle = card.title.length > 1800 ? `${card.title.slice(0, 1830)}... Acesse a informação completa no link abaixo: ` : card.title;
+            saibaMaisSlider.insertAdjacentHTML('beforeend', `
+                <div class="card_saibamais card">
+                    <div class="card_txt">
+                        <p class="chat_tipo">Saiba mais:</p>
+                        <p class="card_title">${cardTitle}</p>
+                        <p class="chat_fonte">Fonte: ${card.source}</p>
+                        <a target="_blank" href="${card.link}"><button class="chat_button">Acesse</button></a>
+                    </div>
+                </div>
+            `);
+        });
+
+        updateCarousel(); // Atualiza o carrossel após a criação
+        carouselContainer.classList.remove('hidden'); // Torna o carrossel visível
+    }
+
+
+    // Função para criar o carrossel 360 graus
+    function createCarousel360(images) {
+        carousel360.innerHTML = ''; // Limpa o conteúdo existente
+
+        // Adiciona as imagens ao carrossel
+        images.forEach(img => {
+            carousel360.insertAdjacentHTML('beforeend', `
+                <img src="${img}" alt="Imagem 360 graus">
+            `);
+        });
+
+        // Duplicar as imagens para criar efeito contínuo
+        images.forEach(img => {
+            carousel360.insertAdjacentHTML('beforeend', `
+                <img src="${img}" alt="Imagem 360 graus">
+            `);
+        });
+
+        startCarousel360(); // Inicia o movimento automático do carrossel 360 graus
+        carousel360Container.classList.remove('hidden'); // Torna o carrossel 360 graus visível
+        carousel360Title.classList.remove('hidden'); // Torna o título do carrossel 360 graus visível
+    }
+
+    // Ajusta a navegação do carrossel
+    function updateCarousel() {
+        const slideWidth = saibaMaisSlider.children[0]?.clientWidth || 0;
+        saibaMaisSlider.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+    }
+
+    const prevBtn = document.querySelector('.btn-prev');
+    const nextBtn = document.querySelector('.btn-next');
+
+    nextBtn.addEventListener('click', () => {
+        if (currentSlide < saibaMaisSlider.children.length - 1) {
+            currentSlide++;
+            updateCarousel();
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentSlide > 0) {
+            currentSlide--;
+            updateCarousel();
+        }
+    });
+
+    // Função para carregar os resultados da pesquisa
+    searchButton.addEventListener('click', async () => {
+        const input = searchInput.value.trim();
+        resultsContainer.innerHTML = '';
+        saibaMaisSlider.innerHTML = ''; // Limpa o carrossel existente
+        carouselContainer.classList.add('hidden'); // Oculta o carrossel
+        carousel360Container.classList.add('hidden'); // Oculta o carrossel 360 graus
+        carousel360Title.classList.add('hidden'); // Oculta o título do carrossel 360 graus
+
+        if (input) {
+            try {
+                const response = await fetch(`/search?q=${encodeURIComponent(input)}`);
+                const results = await response.json();
+
+                console.log('Search Results:', results);
+
+                results.forEach(result => {
+                    let resultHtml = '<div class="chat_cnt">';
+
+                    // Conceito
+                    if (result.texto_definicao1) {
+                        resultHtml += `
+                            <p class="chat_tipo">Conceito:</p>
+                            <div class="chat_txt">
+                                <p class="chat_texto">${result.texto_definicao1}</p>
+                                <p class="chat_fonte">Fonte: ${result.fonte_definicao1}</p>
+                                <p class="chat_fonte">${result.acesso_em}</p>`;
+                        if (result.url_sus) {
+                            resultHtml += `<a target="_blank" href="${result.url_sus}"><button class="chat_button">Acesse</button></a>`;
+                        }
+                        resultHtml += '</div>';
+                    }
+
+                    // Conceito dado por outra fonte
+                    if (result.texto_definicao2) {
+                        resultHtml += `
+                            <p class="chat_tipo">Conceito:</p>
+                            <div class="chat_txt">
+                                <p class="chat_texto">${result.texto_definicao2}</p>
+                                <p class="chat_fonte">Fonte: ${result.fonte_definicao2}</p>
+                                <p class="chat_fonte">${result.acesso_em}</p>`;
+                        if (result.url_med) {
+                            resultHtml += `<a target="_blank" href="${result.url_med}"><button class="chat_button">Acesse</button></a>`;
+                        }
+                        resultHtml += '</div>';
+                    }
+
+                    // Outro conceito
+                    if (result.texto_definicao3) {
+                        resultHtml += `
+                            <p class="chat_tipo">Conceito:</p>
+                            <div class="chat_txt">
+                                <p class="chat_texto">${result.texto_definicao3}</p>
+                                <p class="chat_fonte">Fonte: ${result.fonte_definicao3}</p>
+                                <p class="chat_fonte">${result.acesso_em}</p>
+                            </div>`;
+                    }
+
+                    // Tratamento, prevenção e público-alvo
+                    if (result.texto_tratamento || result.texto_prevencao || result.texto_publicoalvo) {
+                        resultHtml += '<div class="chat_tppa">';
+
+                        if (result.texto_tratamento) {
+                            resultHtml += `
+                                <div class="ttpa">
+                                    <p class="chat_tipo">Tratamento:</p>
+                                    <p class="chat_texto">${result.texto_tratamento}</p>
+                                    <p class="chat_fonte">Fonte: ${result.fonte_tratamento}</p>
+                                </div>`;
+                        }
+
+                        if (result.texto_prevencao) {
+                            resultHtml += `
+                                <div class="ttpa">
+                                    <p class="chat_tipo">Prevenção:</p>
+                                    <p class="chat_texto">${result.texto_prevencao}</p>
+                                    <p class="chat_fonte">Fonte: ${result.fonte_prevencao}</p>
+                                </div>`;
+                        }
+
+                        if (result.texto_publicoalvo) {
+                            resultHtml += `
+                                <div class="ttpa">
+                                    <p class="chat_tipo">Público-Alvo:</p>
+                                    <p class="chat_texto">${result.texto_publicoalvo}</p>
+                                    <p class="chat_fonte">Fonte: ${result.fonte_publicoalvo}</p>
+                                </div>`;
+                        }
+
+                        resultHtml += '</div>';
+                    }
+
+                    // Vídeos
+                    if (result.thumbnails && result.thumbnails.length > 0) {
+                        resultHtml += '<p class="chat_tipo">Vídeos relacionados:</p>'; 
+                        resultHtml += '<div class="chat_video">';
+                        result.thumbnails.forEach((thumb, index) => {
+                            if (thumb) {
+                                resultHtml += `
+                                    <div class="card_video card">
+                                        <img class="card_img" src="${thumb}" alt="Thumbnail do vídeo ${index + 1}">
+                                        <div class="card_txt">
+                                            <p class="card_title">${result.titles[index]}</p>
+                                            <p class="card_fonte">Fonte: ${result.sources[index]}</p>
+                                            <a target="_blank" href="${result.links[index]}"><button class="chat_button">Acesse</button></a>
+                                        </div>
+                                    </div>`;
+                            }
+                        });
+                        resultHtml += '</div>';
+                    }
+
+                    // Links de Saiba Mais
+                    if (result.paragrafo1 || result.paragrafo2 || result.paragrafo3) {
+                        const saibaMaisCards = [];
+
+                        if (result.paragrafo1) {
+                            saibaMaisCards.push({
+                                title: result.paragrafo1,
+                                source: result.fonte_link1,
+                                link: result.link1
+                            });
+                        }
+
+                        if (result.paragrafo2) {
+                            saibaMaisCards.push({
+                                title: result.paragrafo2,
+                                source: result.fonte_link2,
+                                link: result.link2
+                            });
+                        }
+
+                        if (result.paragrafo3) {
+                            saibaMaisCards.push({
+                                title: result.paragrafo3,
+                                source: result.fonte_link3,
+                                link: result.link3
+                            });
+                        }
+
+                        createCarousel(saibaMaisCards);
+                    }
+
+                    resultHtml += '</div>';
+                    resultsContainer.insertAdjacentHTML('beforeend', resultHtml);
+
+                    // Adiciona o carrossel 360 graus após o carrossel Saiba Mais
+                    const images360 = [
+                        '/img/fonte1.png',
+                        '/img/fonte2.png',
+                        '/img/fonte3.png',
+                        '/img/fonte4.png',
+                        '/img/fonte5.png',
+                        '/img/fonte6.png',
+                        '/img/fonte7.png',
+                        '/img/fonte8.png',
+                        '/img/fonte9.png',
+                        '/img/fonte10.jpeg'
+                    ];
+                    createCarousel360(images360);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar resultados:', error);
+            }
+        }
+    });
+
+    // Função para carregar sugestões enquanto o usuário digita
+    searchInput.addEventListener('input', async () => {
+        const input = searchInput.value.trim();
+        suggestionsBox.innerHTML = '';
+
+        if (input) {
+            try {
+                const response = await fetch(`/suggestions?q=${encodeURIComponent(input)}`);
+                const suggestions = await response.json();
+
+                console.log('Suggestions:', suggestions);
+
+                suggestions.forEach(suggestion => {
+                    const suggestionDiv = document.createElement('div');
+                    const titulo = suggestion.titulo;
+                    const tambemChamado = suggestion.tambem_chamado ? ` (${suggestion.tambem_chamado})` : '';
+                    suggestionDiv.textContent = `${titulo}${tambemChamado}`;
+                    suggestionDiv.className = 'suggestion-item'; // Adiciona classe para estilização
+                    suggestionDiv.addEventListener('click', () => {
+                        searchInput.value = titulo;
+                        suggestionsBox.innerHTML = '';
+                        searchButton.click(); // Aciona a busca ao clicar em uma sugestão
+                    });
+                    suggestionsBox.appendChild(suggestionDiv);
+                });
+            } catch (error) {
+                console.error('Erro ao buscar sugestões:', error);
+            }
+        }
+    });
+
+    // Função para mover o carrossel 360 graus automaticamente
+    function startCarousel360() {
+        const imagesCount = carousel360.children.length;
+        if (imagesCount > 0) {
+            const slideWidth = carousel360.children[0]?.clientWidth || 0;
+
+            setInterval(() => {
+                carousel360.style.transform = `translateX(-${slideWidth}px)`;
+                setTimeout(() => {
+                    carousel360.appendChild(carousel360.children[0]); // Move a primeira imagem para o final
+                    carousel360.style.transition = 'none';
+                    carousel360.style.transform = 'translateX(0)';
+                    setTimeout(() => {
+                        carousel360.style.transition = 'transform 0.5s ease';
+                    }, 50);
+                }, 500); // Sincroniza com o tempo de transição
+            }, 3000); // Troca de imagem a cada 3 segundos
+        }
+    }
+
+    startCarousel360();
+});
+    </script>
+</body>
+</html>

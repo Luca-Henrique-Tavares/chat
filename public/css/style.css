@@ -1,0 +1,423 @@
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&family=Roboto+Slab:wght@300&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+    padding-block: 20px;
+}
+
+li {
+    list-style-type: none;
+}
+
+/* NAVBAR */
+.container_nav {
+    background-color: #AFEEFF;
+}
+
+.nav {
+    margin-top: 0;
+    display: flex;
+    flex-direction: row;
+    height: 150px;
+    justify-content: space-between;
+}
+
+.logo {
+    margin-top: 0;
+    width: 10rem;
+    height: 10rem;
+}
+
+.logo_inst {
+    margin-top: 0;
+    width: 7rem;
+    height: 7rem;
+}
+
+.ul-nav {
+    margin-right: 5%;
+    margin-left: 5%;
+    display: flex;
+    flex-direction: row;
+    gap: 80px;
+    align-items: center;
+    font-family: Aclonica, sans-serif;
+    color: #000;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.linha {
+    stroke-width: 12px;
+    background-color: #FFE555;
+    height: 20px;
+}
+
+/* RODAPÉ */
+.rodape {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-right: 25%;
+    margin-left: 25%;
+    background: #AFEEFF;
+    height: 150px;
+}
+
+.instagram, .youtube {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #000;
+    font-family: 'Aclonica', sans-serif;
+    font-size: 20px;
+}
+
+.ul-footer {
+    margin-top: 2%;
+    color: #000;
+    font-family: 'Aclonica', sans-serif;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.container_redes {
+    display: flex;
+    flex-direction: row;
+    gap: 100px;
+}
+
+.logo_insta {
+    width: 80px;
+    height: 80px;
+}
+
+/* PAGINA INPUT CHATBOT */
+.pagchat_img {
+    width: 100%; 
+    height: auto; 
+    max-width: 100%; 
+    display: block; 
+    margin: 0 auto; 
+}
+
+.chat_container {
+    min-height: 100vh; 
+    background: linear-gradient(180deg, #58C3E0 0%, #AFEEFF 100%);
+    padding: 20px; 
+}
+
+.chat_cnt {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.chat_title {
+    color: #000;
+    font-family: Aclonica, sans-serif;
+    font-size: 80px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 5%; 
+    margin-bottom: 2%; 
+}
+
+.chat_sep {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px; 
+}
+
+.chat_pesq {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 2%; 
+    margin-bottom: 4%; 
+}
+
+.chat_plc {
+    width: 700px; 
+    height: 70px; 
+    border-radius: 50px;
+    background-color: #BC2727;
+    border: none;
+    color: #FFF;
+    font-family: 'Aclonica', sans-serif;
+    font-size: 30px; 
+    font-weight: bold;
+    text-align: center;
+    padding-right: 60px;
+}
+
+.chat_plc::placeholder {
+    color: #FFF;
+}
+
+.chat_pesq button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px; 
+}
+
+.pesquisar_img {
+    width: 30px;
+    height: 30px;
+}
+
+#suggestions {
+    position: absolute;
+    top: 85px;
+    width: 100%;
+    max-width: 700px; 
+    background-color: #FFF;
+    border-radius: 0 0 50px 50px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+#suggestions div {
+    padding: 10px;
+    cursor: pointer;
+    color: #BC2727;
+    font-family: 'Aclonica', sans-serif;
+    font-size: 30px;
+}
+
+#suggestions div:hover {
+    background-color: #ff7b7b;
+}
+
+/* Resposta */
+.card {
+    background-color: #FFF;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    text-align: justify;
+}
+
+.chat_tipo {
+    color: #000;
+    font-family: 'Aclonica', sans-serif;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    margin-top: 30px;
+    display: block; 
+}
+
+.chat_tipo.hidden {
+    display: none; 
+}
+
+.chat_txt {
+    margin-bottom: 30px; 
+}
+
+.chat_texto {
+    font-family: 'Roboto Slab', serif;
+    font-size: 22px; 
+    color: #000;
+    line-height: 1.6;
+    margin-bottom: 15px; 
+    text-align: justify;
+}
+
+.chat_fonte {
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px; 
+    color: #555;
+    margin-bottom: 15px; 
+    text-align: justify;
+}
+
+/* Botoes */
+.chat_button {
+    background-color: #BC2727;
+    color: #FFF;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Aclonica', sans-serif;
+    font-size: 18px; 
+    margin: 20px auto; 
+    display: block; 
+}
+
+.chat_button:hover {
+    background-color: #a51f1f;
+}
+
+/* Vídeos e Saiba Mais */
+.chat_video, .chat_saibamais {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px; 
+    justify-content: space-between;
+}
+
+.card_video, .card_saibamais {
+    width: calc(33.333% - 30px); 
+    background-color: #FFF;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.card_img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 15px; 
+}
+
+.card_title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px; 
+}
+
+.card_txt {
+    text-align: justify; 
+}
+
+/* Carrossel Saiba Mais */
+.carousel-container {
+    position: relative;
+    width: 1180px; 
+    height: 650px; 
+    overflow: hidden;
+    margin: 5px auto;
+    margin-bottom: 30px;
+}
+
+.carousel-slide {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.card_saibamais {
+    flex: 0 0 auto;
+    width: 1180px; 
+    height: 650px; 
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #FFF;
+    border-radius: 10px; 
+}
+
+.card_saibamais .card_title {
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px; 
+    font-weight: bold;
+    margin-bottom: 10px; 
+}
+
+.card_saibamais .card_txt {
+    font-family: 'Roboto Slab', serif;
+    font-size: 18px; 
+    text-align: justify;
+    padding: 30px; 
+}
+
+/* Botoes de Controle */
+.btn-prev, .btn-next {
+    position: absolute;
+    top: 50%;
+    background: #f1f1f1;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 24px;
+    color: #BC2727; 
+    z-index: 1; 
+}
+
+.btn-prev {
+    left: 10px;
+}
+
+.btn-next {
+    right: 10px;
+}
+
+.btn-prev:hover, .btn-next:hover {
+    background: #ddd;
+}
+
+/* Botões ocultos inicialmente */
+.hidden {
+    display: none;
+}
+
+/* Ajustar visibilidade dos botões */
+.carousel-container.visible .btn-prev,
+.carousel-container.visible .btn-next {
+    display: block;
+}
+
+.carousel-container.hidden .btn-prev,
+.carousel-container.hidden .btn-next {
+    display: block; 
+}
+
+/* Carrossel 360 Graus */
+.carousel-360-container {
+    position: relative;
+    width: 100%;
+    height: 95px; 
+    overflow: hidden;
+    margin-bottom: 30px;
+    padding: 0 20px; 
+    box-sizing: border-box; 
+}
+
+.carousel-360-slide {
+    display: flex;
+    width: calc(100% * 2); 
+    height: 100%;
+    transition: transform 0.5s ease;
+    overflow-x: hidden;
+}
+
+.carousel-360-slide img {
+    width: 105px;
+    height: 100%;
+    object-fit: cover;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+@keyframes rotate {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-calc(100% - 40px)); 
+    }
+}
