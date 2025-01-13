@@ -5,6 +5,7 @@ Nessa seção você encontrará as informações do código frontend do projeto 
 Além disso, não se esqueça das seguintes etapas:
 + modifique sua senha
 + modifique seu usuário
+
 Após tal processo, adeque suas mudanças nos arquivos conn.js e bd.py
 ## 2- Execute o arquivo bd.py na pasta python 
 caso não tenha instalado as bibliotecas, o faça antes. 
