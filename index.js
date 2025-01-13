@@ -103,6 +103,17 @@ app.get('/search', (req, res) => {
     });
 });
 
+
+// Rota para lidar com a requisição do cliente
+app.post('/api/enviar', (req, res) => {
+    const { comentario,opcao_select,opcao_select2,fk_idtabfin,tabfin_camp} = req.body;
+    const query = 'INSERT INTO comentario (comentario,opcao_select,opcao_select2,fk_idtabfin,tabfin_camp) VALUES (?, ?,?,?,?)';
+    conn.query(query, [comentario,opcao_select,opcao_select2,fk_idtabfin,tabfin_camp], (err, result) => {
+        if (err) throw err;
+        res.json({ success: true, message: 'Comentário enviado com sucesso!' });
+    });
+});
+
 // Conexão ao MySQL e inicialização do servidor
 conn.connect(err => {
     if (err) throw err;

@@ -2,47 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="\css\style.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
-
-  <nav>
+   <nav>
     <div class="container_nav">
         <div class="nav">
-            <ul class="ul-nav">
-                <a href="/"><img class="logo" src="/img/TEKI 1 PNG PRETO.png"></a>
-                <li class="lista-nav"><a href="/">Início</a></li>
-                <li class="lista-nav"><a href="/noticias">Notícias</a></li>
-                <li class="lista-nav"><a href="/filtrar">Filtrar</a></li>
-                <div class="nav-block"><a href="http://www.fapemig.br/pt/" target="_blank"><img class="logo_inst" src="/img/fapemig_2.png"></a></div>
-                <div class="nav-block"><a href="https://www.divinopolis.cefetmg.br/" target="_blank"><img class="logo_inst" src="/img/Cefet.png"></a></div>
-                <div class="nav-block"><a href="https://www.ufsj.edu.br/cco/" target="_blank"><img class="logo_inst" src="/img/UFSJ.png"></a></div>
-            </ul>
+            <div>
+                <button id="menu-button" class="menu-button">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul id="ul-nav">
+                    <a href="/"><li class="lista-nav">Teki Responde</li></a>
+                </ul>
+            </div>
+            <a href="/" class="nav_spad"><img class="logo_nav01" src="/img/TEKI 1 PNG PRETO.png"></a>
+            <div>
+            </div>
         </div>
     </div>
-    <div class="linha"></div>
-   </nav>
+  </nav>
+  <div class="content">
+      <!-- Conteúdo da página -->
+  </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const menuButton = document.getElementById('menu-button');
+    const ulNav = document.getElementById('ul-nav');
+
+    menuButton.addEventListener('click', () => {
+        ulNav.classList.toggle('show');
+        menuButton.classList.toggle('open');
+    });
+});
+</script>
 <body>
     {{{body}}}
 </body>
 <footer>
-    <div class="linha"></div>
-    <div class="container_nav">
+    <div class="container_foot">
         <div class="rodape">
-            <ul class="ul-footer">
-                <li class="lista-nav">Também aqui:</li>
-            </ul>
+            <div class="footer_lg">
+                <a class="btw" href="/"><img class="logo_nav" src="/img/TEKI 1 PNG PRETO.png"></a>
+            </div>
             <div class="container_redes">
                 <div class="instagram">
-                    <a href="https://instagram.com/tekisaude?igshid=OGQ5ZDc2ODk2ZA==" target="_blank"><img class="logo_insta" src="/img/instagram_pngwing.png"></a>
-                    <p>Teki_Saude</p>
-                </div>
-                <div class="youtube">
-                    <a href="/" target="_blank"><img class="logo_insta" src="/img/youtube_freepic.png"></a>
-                    <p>Teki_Saude</p>
+                    <a class="btw" href="https://instagram.com/tekisaude?igshid=OGQ5ZDc2ODk2ZA==" target="_blank"><img class="logo_insta" src="/img/instagram_icon.png"></a>
+                    <a class="btw" href="https://www.youtube.com/@tekisaude" target="_blank"><img class="logo_foot_yt" src="/img/Youtube_logo.png"></a>
+                    <a class="btw" href="http://www.fapemig.br/pt/" target="_blank"><img class="logo_foot_fap" src="/img/fapemig_2.png"></a>
+                    <a class="btw" href="https://www.divinopolis.cefetmg.br/" target="_blank"><img class="logo_foot_cft" src="/img/Cefet.png"></a>
+                    <a class="btw" href="https://www.ufsj.edu.br/cco/" target="_blank"><img class="logo_insta" src="/img/logo_ufsj.png"></a>
                 </div>
             </div>
+            <ul class="ul-footer">
+                <li class="lista-nav">@ tekisaúde 2024 - todos os direitos reservados</li>
+            </ul>
         </div>
     </div>
 </footer>
